@@ -8,9 +8,9 @@ description: "TLCPack"
 
 <br>
 
-# About TLPack
+# About TLCPack
 
-Tensor learning compiler binary package. TLCPack is a community maintained
+TLCPack -- Tensor learning compiler binary package. It is a community maintained
 binary builds of deep learning compilers.
 TLCPack does not contain any additional source code release.
 It takes source code from Apache TVM and build the binaries by
