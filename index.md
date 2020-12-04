@@ -21,3 +21,5 @@ when you use the binary builds.
 TLCPack is not part of Apache and is run by thirdparty community volunteers.
 Please refer to the [official Apache TVM website](https://tvm.apache.org/download) for
 Apache source releases.
+
+{% include quick_start_local.html %}
