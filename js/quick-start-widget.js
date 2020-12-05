@@ -117,7 +117,7 @@ function buildMatcher() {
   );
 }
 
-function commandMessage(key) {
+function setupMapping() {
   object = {}
   for (var platform of ["windows", "linux", "macos"]) {
     for (var ver of ["preview", "stable"]) {
@@ -140,12 +140,17 @@ function commandMessage(key) {
       }
     }
   }
+  return object;
+}
 
-  if (!object.hasOwnProperty(key)) {
+var commandMap = setupMapping();
+
+function commandMessage(key) {
+  if (!commandMap.hasOwnProperty(key)) {
     $("#command").html(
       "<pre> # Follow instructions at this URL: https://tvm.apache.org/docs/install/from_source.html </pre>"
     );
   } else {
-    $("#command").html("<pre>" + object[key] + "</pre>");
+    $("#command").html("<pre>" + commandMap[key] + "</pre>");
   }
 }
