@@ -118,7 +118,7 @@ function buildMatcher() {
 }
 
 function setupMapping() {
-  object = {}
+  var object = {}
   for (var platform of ["windows", "linux", "macos"]) {
     for (var ver of ["preview", "stable"]) {
       const conda_none_key = ver + ",conda," + platform + ",cudanone,python";
