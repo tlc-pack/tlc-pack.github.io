@@ -22,4 +22,7 @@ TLCPack is not part of Apache and is run by thirdparty community volunteers.
 Please refer to the [official Apache TVM website](https://tvm.apache.org/download) for
 Apache source releases.
 
+Licenses for TVM and its dependencies can be found in
+[the github repository](https://github.com/apache/tvm/tree/main/licenses).
+
 {% include quick_start_local.html %}
