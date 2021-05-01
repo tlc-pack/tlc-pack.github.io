@@ -130,9 +130,10 @@ function setupMapping() {
       }
 
       object[conda_none_key] = "conda install " + name + " -c tlcpack";
-      // do not have linux wheel yet
-      if (platform != "linux") {
-        object[pip_none_key] = "pip install " + name + " -f https://tlcpack.ai/wheels";
+
+      if (platform != "linux" && ver != "stable") {
+          // do not have stable wheel yet, work later
+          object[pip_none_key] = "pip install " + name + " -f https://tlcpack.ai/wheels";
       }
       // cuda only works on linux
       if (platform == "linux") {
