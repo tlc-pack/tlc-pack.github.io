@@ -131,7 +131,7 @@ function setupMapping() {
 
       object[conda_none_key] = "conda install " + name + " -c tlcpack";
 
-      if (platform != "linux" && ver != "stable") {
+      if (!(platform == "linux" && ver == "stable")) {
           // do not have stable wheel yet, work later
           object[pip_none_key] = "pip install " + name + " -f https://tlcpack.ai/wheels";
       }
