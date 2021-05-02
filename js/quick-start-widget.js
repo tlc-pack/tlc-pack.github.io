@@ -10,7 +10,7 @@ var opts = {
   os: getAnchorSelectedOS() || getDefaultSelectedOS(),
   pm: 'conda',
   language: 'python',
-  tvmbuild: 'stable',
+  tvmbuild: 'preview',
 };
 
 var os = $(".os > .option");
@@ -121,23 +121,30 @@ function setupMapping() {
   var object = {}
   for (var platform of ["windows", "linux", "macos"]) {
     for (var ver of ["preview", "stable"]) {
-      const conda_none_key = ver + ",conda," + platform + ",cudanone,python";
-      const pip_none_key = ver + ",pip," + platform + ",cudanone,python";
-      const conda_cuda_100_key = ver + ",conda," + platform + ",cuda10.0,python";
-      var name = "tlcpack";
-      if (ver == "preview") {
-        name = name + "-nightly";
-      }
+      for (var cuda of ["none", "10.0", "10.1", "10.2"]) {
+        const conda_key = ver + ",conda," + platform + ",cuda" + cuda + ",python";
+        const pip_key = ver + ",pip," + platform + ",cuda" + cuda + ",python";
 
-      object[conda_none_key] = "conda install " + name + " -c tlcpack";
+        var name = "tlcpack";
+        if (ver == "preview") {
+          name = name + "-nightly";
+        }
+        if (cuda != "none") {
+          // cuda specific version
+          name = name + "-cu" + cuda.split(".").join("");
+        }
+        const conda_enabled = ((platform != "linux" && cuda == "none") ||
+                               (platform == "linux"));
 
-      if (!(platform == "linux" && ver == "stable")) {
-          // do not have stable wheel yet, work later
-          object[pip_none_key] = "pip install " + name + " -f https://tlcpack.ai/wheels";
-      }
-      // cuda only works on linux
-      if (platform == "linux") {
-        object[conda_cuda_100_key] = "conda install " + name + "-cu100 -c tlcpack";
+        const pip_enabled = ((platform != "linux" && cuda == "none") ||
+                             (platform == "linux" && ver == "preview"));
+
+        if (conda_enabled) {
+          object[conda_key] = "conda install " + name + " -c tlcpack";
+        }
+        if (pip_enabled) {
+          object[pip_key] = "pip install " + name + " -f https://tlcpack.ai/wheels";
+        }
       }
     }
   }
