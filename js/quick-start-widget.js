@@ -8,10 +8,18 @@ var supportedOperatingSystems = new Map([
 var opts = {
   cuda: 'cudanone',
   os: getAnchorSelectedOS() || getDefaultSelectedOS(),
-  pm: 'conda',
+  pm: 'pip',
   language: 'python',
-  tvmbuild: 'preview',
+  tvmbuild: 'stable',
 };
+
+for (const opt in opts) {
+  const value = opts[opt];
+  const el = document.querySelector(`div[id=${value}]`);
+  if (el) {
+    $(el).addClass("selected");
+  }
+}
 
 var os = $(".os > .option");
 var package = $(".package > .option");
@@ -81,7 +89,8 @@ function selectedOption(option, selection, category) {
   if (category === "pm") {
   }
 
-  commandMessage(buildMatcher());
+  const match = buildMatcher();
+  commandMessage(match);
   if (category === "os") {
     display(opts.os, 'installation', 'os');
   }
@@ -148,6 +157,11 @@ function setupMapping() {
       }
     }
   }
+  object["stable,pip,macos,cudanone,python"] = "pip install apache-tvm"
+  object["stable,pip,linux,cudanone,python"] = "pip install apache-tvm"
+  object["stable,pip,linux,cuda10.2,python"] = "pip install apache-tvm-cu102 -f https://tlcpack.ai/wheels"
+  object["stable,pip,linux,cuda11.3,python"] = "pip install apache-tvm-cu113 -f https://tlcpack.ai/wheels"
+  object["stable,pip,linux,cuda11.6,python"] = "pip install apache-tvm-cu116 -f https://tlcpack.ai/wheels"
   return object;
 }
 
@@ -156,7 +170,7 @@ var commandMap = setupMapping();
 function commandMessage(key) {
   if (!commandMap.hasOwnProperty(key)) {
     $("#command").html(
-      "<pre> # Follow instructions at this URL: https://tvm.apache.org/docs/install/from_source.html </pre>"
+      "<pre> # Follow instructions at this URL: <a style=\"font-size: 1em\" href=\"https://tvm.apache.org/docs/install/from_source.html\">https://tvm.apache.org/docs/install/from_source.html</a> </pre>"
     );
   } else {
     $("#command").html("<pre>" + commandMap[key] + "</pre>");
